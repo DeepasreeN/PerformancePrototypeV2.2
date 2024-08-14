@@ -1,0 +1,55 @@
+<p-progressSpinner 
+    *ngIf="loading"
+    styleClass="w-4rem h-4rem" 
+    strokeWidth="8" 
+    fill="var(--surface-ground)" 
+    animationDuration=".5s" />
+<div *ngIf="!loading">
+    <h3>Transaction Details</h3>
+    <div>
+        <p-table [value]="transactions" 
+        styleClass="p-datatable-gridlines"  
+        [paginator]="true"
+        [rows]="5"
+        [first]="first"
+        [showCurrentPageReport]="true"
+        [tableStyle]="{ 'min-width': '50rem' }"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [rowsPerPageOptions]="[5, 10, 20]"
+        (onPage)="pageChange($event)"
+        SortMode="multiple">
+            <ng-template pTemplate="header">
+              <tr>
+                <th pSortableColumn="id">ID</th>
+                <th pSortableColumn="date">Date</th>
+                <th pSortableColumn="time">Time</th>
+                <th pSortableColumn="quantity">Quantity</th>
+                <th pSortableColumn="storeId">StoreId</th>
+                <th pSortableColumn="storeLocation">StoreLocation</th>
+                <th pSortableColumn="productId">ProductId</th>
+                <th pSortableColumn="unitPrice">UnitPrice</th>
+                <th pSortableColumn="productCategory">ProductCategory</th>
+                <th pSortableColumn="productType">ProductType</th>
+                <th pSortableColumn="productDetail">ProductDetail</th>
+                <th pSortableColumn="month">Month</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-transaction>
+              <tr>
+                <td>{{ transaction.id }}</td>
+                <td>{{ transaction.date }}</td>
+                <td>{{ transaction.time }}</td>
+                <td>{{ transaction.quantity }}</td>
+                <td>{{ transaction.storeId }}</td>
+                <td>{{ transaction.storeLocation }}</td>
+                <td>{{ transaction.productId }}</td>
+                <td>{{ transaction.unitPrice }}</td>
+                <td>{{ transaction.productCategory }}</td>
+                <td>{{ transaction.productType }}</td>
+                <td>{{ transaction.productDetail }}</td>
+                <td>{{ transaction.month }}</td>
+              </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</div>
