@@ -2,6 +2,7 @@
 using PerformancePrototypeV2.API.DAL.Model;
 using PerformancePrototypeV2.API.Service.Transaction;
 using PerformancePrototypeV2.API.Common;
+using PerformancePrototypeV2.API.Service;
 
 namespace PerformancePrototypeV2.API.Controllers
 {
@@ -41,13 +42,13 @@ namespace PerformancePrototypeV2.API.Controllers
         }
 
         [HttpGet("page")]
-        public async Task<ApiResponse<IEnumerable<TransactionDetail>>> GetByPage(int pagesize,int pagenumber=1)
+        public async Task<ApiResponse<IEnumerable<TransactionDetail>>> GetByPage(int pageSize,int skipNumber=0)
         {
 
-            var data = await _transactionService.GetTransactionData(pagesize,pagenumber);
+            var data = await _transactionService.GetTransactionData(pageSize, skipNumber);
             if (data == null)
             {
-                return new ApiResponse<IEnumerable<TransactionDetail>>
+                return new ApiResponse<TransDetails>
                 {
                     Success = false,
                     Message = "Transaction not found",
@@ -55,7 +56,30 @@ namespace PerformancePrototypeV2.API.Controllers
                 };
             }
 
-            return new ApiResponse<IEnumerable<TransactionDetail>>
+            return new ApiResponse<TransDetails>
+            {
+                Success = true,
+                Message = "Transactions retrieved successfully",
+                Data = data
+            };
+
+        }
+        [HttpGet("count")]
+        public  ApiResponse<int> GetTotalCount()
+        {
+
+            var data = 100;
+            if (data == 0)
+            {
+                return new ApiResponse<int>
+                {
+                    Success = false,
+                    Message = "Transaction not found",
+                    Data = data
+                };
+            }
+
+            return new ApiResponse<int>
             {
                 Success = true,
                 Message = "Transactions retrieved successfully",

@@ -12,3 +12,10 @@ export interface Transaction {
     productDetail:string;
     month:string;
   }
+
+  export interface TransactionResponse{
+   transactions:Transaction
+    total :number;
+    skip:number;
+    limit:number;
+  }

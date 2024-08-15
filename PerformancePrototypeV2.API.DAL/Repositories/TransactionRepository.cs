@@ -15,14 +15,20 @@ namespace PerformancePrototypeV2.API.DAL.Repositories
             _context = context;
         }
 
-        public async Task<List<TransactionDetail>> GetpagedTransactionData(int pageSize, int pageNumber)
+        public async Task<List<TransactionDetail>> GetPagedTransactionData(int pageSize, int skipNumber)
         {
             var data = await _context.TransactionDetails
                             .OrderBy(x=>x.Id)
-                            .Skip((pageNumber - 1) * pageSize)
+                            .Skip(skipNumber)
                             .Take(pageSize)
                             .ToListAsync();
             return data;
+        }
+
+        public async Task<int> GetTotalRecordCount()
+        {
+            var count = await _context.TransactionDetails.CountAsync();
+            return count;
         }
     }
 }

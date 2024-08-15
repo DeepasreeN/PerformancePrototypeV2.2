@@ -8,15 +8,17 @@ import { Observable } from 'rxjs';
 
 export class TransactionService {
 
-  private apiUrl = 'http://localhost:5128/api';
+  private apiUrl = 'http://localhost:5106/api';
 
   constructor(private http: HttpClient) { }
 
   getData(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/Transaction`);
   }
-  getAllTransactions(pageNo:number,pageSize:number): Observable<any> {  
-    return this.http.get(this.apiUrl+'/Transaction/page?pageNo=' + pageNo+'&pageSize='+pageSize);  
-    
+  getAllTransactions(skipNumber:number,pageSize:number): Observable<any> {  
+    return this.http.get(this.apiUrl+'/Transaction/page?pageSize='+pageSize+'&skipNumber=' + skipNumber);      
    }  
+   getTotalDataCount(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/Transaction/count`);
+  }
 }

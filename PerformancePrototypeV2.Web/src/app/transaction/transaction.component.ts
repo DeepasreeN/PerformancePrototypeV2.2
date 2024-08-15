@@ -1,52 +1,41 @@
-import {Component,OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import { Transaction } from './Transaction';
 import { TransactionService } from './transactions.service';
+import { LazyLoadEvent } from 'primeng/api';
+import { TableLazyLoadEvent } from 'primeng/table';
 
 @Component({
     selector:'app-transaction',
     templateUrl:'./transaction.component.html'
 })
 
-export class TransactionComponent implements OnInit{
+export class TransactionComponent{
     transactions: Transaction[] = [];
-    first:number=0;
-    last:number=0;
-    totalrescords:number=0;
-    pageNo:number=0;
-    recordsPerPage :number =0;
+    totalRecords:number=0;
+    recordsPerPage :number = 5;
     loading:boolean=false;
-    data: any;
 
     constructor(private transactionservice: TransactionService) { }
-
-    ngOnInit(){
-        this.loadData();
-    }
-
-    loadData()
-    {   this.loading=true;
-        this.transactionservice.getData().subscribe({
-           next: (response) => {
-                this.transactions = response.data;
-                this.loading=false;
-            },
+   
+    loadTransactions($event:TableLazyLoadEvent) { 
+        this.loading=true;
+        this.transactionservice.getAllTransactions($event.first|| 0, this.recordsPerPage).subscribe({
+            next:(response) => {  
+                this.transactions = response.data;  
+                this.getTotalCount(); 
+                this.loading=false;        
+        },
             error:(error) => {
-                console.error('Error fetching transaction data', error);
-                this.loading=false;
-            }
-        });
-    }
-
-    getAllTransactaions() {  
-        this.transactionservice.getAllTransactions(this.pageNo, this.recordsPerPage).subscribe((data: any) => {  
-            this.transactions = data;  
-            //this.getAllCompaniesCount();          
-        })  
+            console.error('Error fetching transaction data', error);
+            this.loading=false;
+        }
+    })  
     }  
 
-    pageChange($event:any)
-    {
-
+    getTotalCount()  {  
+        this.transactionservice.getTotalDataCount().subscribe((response: any) => {  
+            this.totalRecords = response.data;          
+        }) 
     }
-
+  
 }

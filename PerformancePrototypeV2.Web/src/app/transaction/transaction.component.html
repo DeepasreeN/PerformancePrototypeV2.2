@@ -1,23 +1,20 @@
 <p-progressSpinner 
-    *ngIf="loading"
+    *ngIf="false"
     styleClass="w-4rem h-4rem" 
     strokeWidth="8" 
     fill="var(--surface-ground)" 
     animationDuration=".5s" />
-<div *ngIf="!loading">
+
+<div>
     <h3>Transaction Details</h3>
     <div>
         <p-table [value]="transactions" 
-        styleClass="p-datatable-gridlines"  
         [paginator]="true"
         [rows]="5"
-        [first]="first"
-        [showCurrentPageReport]="true"
-        [tableStyle]="{ 'min-width': '50rem' }"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-        [rowsPerPageOptions]="[5, 10, 20]"
-        (onPage)="pageChange($event)"
-        SortMode="multiple">
+        [lazy]="true"
+        (onLazyLoad) ="loadTransactions($event)"
+        [totalRecords]="totalRecords"
+        [loading]="loading">
             <ng-template pTemplate="header">
               <tr>
                 <th pSortableColumn="id">ID</th>
